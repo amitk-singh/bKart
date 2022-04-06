@@ -1,32 +1,16 @@
 // import "../../pages-css/cart-css/cart-page-layout.css";
 import { useState } from 'react';
-import { useCart } from '../../Contexts/cartContext';
-import {useWishList}  from "../../Contexts/wishListContext";
+import { useCart } from '../../Contexts/cartContext1';
+import { useWishList } from '../../Contexts/wishListContext1';
+
 
 const CartDetails = () => {
 
-    const { items, setItems } = useCart();
-    const { wishlistItem, setWishListItem } = useWishList();
+    const { cartItems, removeFromCart } = useCart();
+    const {addToWishList} = useWishList();
+   
 
-    // move from cart to wishlist
-    const moveToWishList = (product) => {
-        const save = [...wishlistItem];
-        //  console.log(product);
-        const index = save.findIndex((item) => item.id === product.id);
-        if (index === -1) {
-          setWishListItem([...save,  product]);
-        }
-      };
-
-      // Remove from cart
-      const handleRemove= (id)=>{
-        
-        const newItems = items.filter((item) => item._id !== id);
-
-        setItems(newItems);
-      }
-
-
+    
 
 
     return (
@@ -41,22 +25,22 @@ const CartDetails = () => {
 
 {/* logic */}
 
-            {items.length === 0 ? (
+            {cartItems.length === 0 ? (
         <h1>Cart is Empty</h1>
       ) :
         ( <div id="section-2">
 
             {
-                items.map((item,id)=>{
+                cartItems.map((product,id)=>{
                     return <div className="vertical-card-with-shadow" key={id}>
                         {/* <h1>{item.quantity}</h1> */}
-                        <img className="vertical-card-img" src={item.image} alt="card image" />
+                        <img className="vertical-card-img" src={product.image} alt="card image" />
                         <div>
                             <div className="text-details">
-                                <h3 className="card-title">{item.productTitle}</h3>
+                                <h3 className="card-title">{product.productTitle}</h3>
 
                                 <h3 className="card-content">
-                                    Price: ₹{item.price}
+                                    Price: ₹{product.price}
                                 </h3>
                                 <div className="size-n-qty">
                                     Size:
@@ -69,13 +53,20 @@ const CartDetails = () => {
                                     </select>
 
                                     <label htmlFor="quantity">Qty.</label>
-                                    <input type="number" id="quantity" name="quantity" value={item.quantity}   min="1" max="50" />
+                                    <select >
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    {/* <input type="number" id="quantity" name="quantity"   min="1" max="50" onChange={(e)=>handlePrice(e.target.value, item)}/> */}
                                 </div>
 
                             </div>
                             <div className="cart-card-btn">
-                                <button className="btn-primary" href="#url" onClick={() => moveToWishList( item)}>Move to wishlist</button>
-                                <button className="btn-secondary" href="#url" onClick={()=>handleRemove(item._id)}>Remove</button>
+                                <button className="btn-primary" href="#url" onClick={()=>addToWishList({product})}>Move to wishlist</button>
+                                <button className="btn-secondary" href="#url" onClick={()=>removeFromCart(product._id)}>Remove</button>
                             </div>
                         </div>
                     </div>
@@ -102,7 +93,7 @@ const CartDetails = () => {
                     <p>Price details <span>6 </span>items</p>
                     <hr />
                     <p className="spacer"></p>
-                    <p><span>Total Price:</span> <span className="txt-float-right dark">₹7194</span></p>
+                    <p><span>Total Price:</span> <span className="txt-float-right dark">1800</span></p>
                     <p>Discount : <span className="txt-float-right dark">-₹2500</span></p>
                     <p>Coupon discount: <span className="txt-float-right txt-color-brand"><a href="#url" className="coupon">Apply coupon</a>
                     </span></p>

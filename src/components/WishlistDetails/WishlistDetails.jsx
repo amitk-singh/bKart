@@ -1,41 +1,18 @@
 import "../../pages-css/wishlist-css/page-layout.css";
-import { useWishList } from '../../Contexts/wishListContext';
-import { useCart } from '../../Contexts/cartContext';
+import { useWishList } from '../../Contexts/wishListContext1';
+import { useCart } from '../../Contexts/cartContext1';
 
 const WishlistDetails = () => {
 
-    // const {wishlistItem} =useWishList();
-    const { wishlistItem, setWishListItem } = useWishList();
-    const { items, setItems } = useCart();
-    // console.log(wishlistItem);
-    
-
-    // Move from wishList to cart
-    const addToCart = ({ product }) => {
-        const save = [...items];
-        console.log(save);
-        const index = save.findIndex((item) => item.id === product.id);
-        if (index === -1) {
-          setItems([...save,  product ]);
-        } else {
-          save[index].quantity += 1;
-          setItems(save);
-        }
-      };
-
-      //Remove form wishlist
-    const handleRemove= (id)=>{
-        
-        const newItems = wishlistItem.filter((item) => item._id !== id);
-
-        setWishListItem(newItems);
-      }
-
+  
+    const { wishlistItems, removeFromWishlist} = useWishList();
+    const {  addToCart } = useCart();
+   
     return (
         <>
           
         {
-            wishlistItem.length === 0 ? (
+            wishlistItems.length === 0 ? (
                 <h1 style={{textAlign:"center"}}>Wishlist is empty</h1>
             ):(
 
@@ -51,7 +28,7 @@ const WishlistDetails = () => {
                 <div id="section-2">
 
                     {
-                        wishlistItem.map((product,id)=>{
+                       wishlistItems.map((product,id)=>{
                            
                             return <div className="prod-in-wishlist" key={id}>
                         {/* <h1>{product.product.price}</h1> */}
@@ -72,8 +49,8 @@ const WishlistDetails = () => {
 
                                 </div>
                                 <div className="cart-card-btn">
-                                    <button className="btn-primary" href="#url" onClick={() => addToCart({ id, product })}>Move to cart</button>
-                                    <button className="btn-secondary" href="#url" onClick={()=>handleRemove(product._id)}>Remove</button>
+                                    <button className="btn-primary" href="#url" onClick={() => addToCart({ product })}>Move to cart</button>
+                                    <button className="btn-secondary" href="#url" onClick={()=>removeFromWishlist(product._id)}>Remove</button>
                                 </div>
                             </div>
                         </div>
